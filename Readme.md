@@ -3,10 +3,10 @@
 ## Project 2, Continuous Control
 
 # Vidoes
-## [Before Training](https://www.youtube.com/watch?v=OE8RaLkGxr8)
+## [Before Training](https://www.youtube.com/watch?v=BBQH9wjk2pc)
 [![BEFORE](https://img.youtube.com/vi/BBQH9wjk2pc/0.jpg)](https://youtu.be/BBQH9wjk2pc)
 
-## [After Training](https://www.youtube.com/watch?v=3S2NPQ858aY)
+## [After Training](https://www.youtube.com/watch?v=Az3UbypBLag)
 [![AFTER](https://img.youtube.com/vi/Az3UbypBLag/0.jpg)](https://youtu.be/Az3UbypBLag)
 
 
@@ -29,7 +29,7 @@ unzip Reacher_Linux_NoVis.zip
 ```
 * Build with `docker build . --rm -t udrl_docker`
 * Run with `run_docker.sh`
-* Inside docker - `cd ./UDACITY_DRL_P1/`
+* Inside docker - `cd ./UDACITY_DRL_P2/`
 * Inside docker - `python continuous_control.py` 
 
 
@@ -54,7 +54,7 @@ MAX_T_TEST = 1000  ## max time step for each episode
 
 # Report
 ## Definitions
-### State (37) and action (4) space:
+### State (33) and action (4) space:
 ```
 Unity brain name: ReacherBrain
         Number of Visual Observations (per agent): 0
@@ -73,7 +73,7 @@ The solution includes an agent trained with Deep Deterministic Policy Gradient (
 
 The changes, in short are as followed:
 
-####Changes from DQN agent to DDPG
+#### Changes from DQN agent to DDPG
 
 * Init:
 	* Added number of agents
@@ -100,13 +100,13 @@ The changes, in short are as followed:
 		* Minimize the loss
 	* Calculate soft update to actor and critic network instead of Q-network
 
-####CHANGES from DQN model to DDPG
+#### CHANGES from DQN model to DDPG
 
 * Changed to two models - actor and critic
 * Actor model - changed final activation function to tanh
 * Critic model - added action vector to input, changed output size (1)
 
-####Changes on main file
+#### Changes on main file
 * Peripherials changes to run the reacher simulation (and change from jupyter-notebook to py file)
 
 
@@ -166,7 +166,7 @@ LR_CRITIC = 5e-3	# **INITIAL** learning rate
 
 ## Learning phase:
 ```
-n_episodes=250
+n_episodes=300
 max_t=1000
 actor_scheduler = torch.optim.lr_scheduler.StepLR(agents.actor_optimizer, step_size=75, gamma=0.1)
 critic_scheduler = torch.optim.lr_scheduler.StepLR(agents.critic_optimizer, step_size=75, gamma=0.1)
@@ -174,11 +174,11 @@ critic_scheduler = torch.optim.lr_scheduler.StepLR(agents.critic_optimizer, step
 * The actor learning rate starts from 5e-4 and drops to 10% of its value every 75 episodes
 * The critic learning rate starts from 5e-3 and drops to 10% of its value every 75 episodes
 
-Eventually the dynamic and constant learning rate gave similar results. Perhaps more tuning is needed.
+Eventually the dynamic and constant learning rate gave similar results which become worth when continued training. The results in the next section are of the constant learning rate but the final results for dynamic learning rate can be found on its folder. Perhaps more tuning is needed.
 
 
 ### Netowrk:
-The network final architecture was as described in the definitions. At the begining the network did not converge since the final values of the actor network were not activated with any activation function so the values could vary from -N to N were N is any number. After adding tanh() to the final layer, the values were -1 to 1 and the score started to rise nicely.
+The network final architecture was as described in the definitions. At the begining the network did not converge since the final values of the actor network were not activated with any activation function so the values could be any number. After adding tanh() to the final layer, the values were -1 to 1 and the score started to rise nicely.
 
 ### Agent:
 DDPG was implemented as described. Different parameters were tested with almost the same results or lower, such as:
@@ -202,5 +202,6 @@ This phase yields and average score of ~35.5 - **Meaning the agents was able to 
 
 ## Ideas for future work
 
+* Continue testing the dynamic learning rate approach
 * Testing more complex network architecture
 * Make more hyperparameter testing, in particular changing some parameters (GAMMA, TAU) to dynamic parameters
